@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prapp-deployment
+  labels:
+    app: prapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: prapp
+  template:
+    metadata:
+      labels:
+        app: prapp
+    spec:
+      containers:
+      - name: prapp
+        image: prapp:1.0.0
+        command: ["curl"]
+        args: ["-H", "Accept: application/vnd.github+json", "-H", "Authorization: Bearer <YOUR-TOKEN>", "https://api.github.com/repos/OWNER/REPO/pulls"]
+        resources:
+          requests: 
+            cpu: 100m
+            memory: 100Mi
+          limits:
+             cpu: 200m
+            memory: 200Mi
+        ports:
+        - containerPort: 80
